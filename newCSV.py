@@ -62,7 +62,7 @@ def split_by_newline(data):
 
     # print(repr(data))
     # print("\n\n\n")
-    print((data))
+    # print((data))
 
     # Split data by newline characters
     data_array = data.split('\n')
@@ -91,11 +91,26 @@ def main():
 
         splitData = split_by_newline(scraped_content)
         
+        # Find the longest array
+        longest_array = max(splitData, key=len)
+
+        scraped_df = scraped_df.append({'author': row['author'], 
+                                        'published': row['published'], 
+                                        'title': row['title'], 
+                                        'text': longest_array, 
+                                        'language': "english", 
+                                        'site_url': row['site_url'], 
+                                        'main_img_url': row['main_img_url'], 
+                                        'type': row['type'], 
+                                        'label': row['label'], 
+                                        'title_without_stopwords': row['title_without_stopwords'], 
+                                        'text_without_stopwords': row['text_without_stopwords'], 
+                                        'hasImage': row['hasImage']}, 
+                                        ignore_index=True)
         # print(scraped_content)
-        # print(splitData)
-        # print(len(splitData))
+        # print(splitData[6])
         # Append scraped content to the DataFrame
-        #scraped_df = scraped_df.append({'author': author,'published': ,'news_url': url, 'scraped_content': scraped_content}, ignore_index=True)
+        
     
     # Save the DataFrame to a new CSV file
     scraped_csv_file = os.path.join('csvs', 'scraped_data.csv')
