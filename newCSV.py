@@ -100,12 +100,12 @@ def main():
                                         'text': longest_array, 
                                         'language': "english", 
                                         'site_url': row['site_url'], 
-                                        'main_img_url': row['main_img_url'], 
-                                        'type': row['type'], 
-                                        'label': row['label'], 
+                                        'main_img_url': 0, 
+                                        'type': 'bias', 
+                                        'label': 'Fake', 
                                         'title_without_stopwords': row['title_without_stopwords'], 
                                         'text_without_stopwords': row['text_without_stopwords'], 
-                                        'hasImage': row['hasImage']}, 
+                                        'hasImage': 1}, 
                                         ignore_index=True)
         # print(scraped_content)
         # print(splitData[6])
