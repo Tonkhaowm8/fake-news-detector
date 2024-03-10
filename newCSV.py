@@ -62,7 +62,7 @@ def split_by_newline(data):
 
     # print(repr(data))
     # print("\n\n\n")
-    # print((data))
+    # print(data)
 
     # Split data by newline characters
     data_array = data.split('\n')
@@ -70,6 +70,8 @@ def split_by_newline(data):
     # Remove leading and trailing whitespaces from each item in the array
     data_array = [item.strip() for item in data_array]
     
+    # print(data_array)
+
     return data_array
 
 
@@ -80,35 +82,36 @@ def main():
     # Read the CSV file into a DataFrame
     df = pd.read_csv(csv_file)
     
-    
     # Create an empty DataFrame to store scraped content
     scraped_df = pd.DataFrame(columns=['author', 'published', 'title', 'text', 'language', 'site_url', 'main_img_url', 'type', 'label', 'title_without_stopwords', 'text_without_stopwords', 'hasImage'])
     
     # Iterate through each row in the DataFrame
     for index, row in df.iterrows():
-        url = row['news_url']
-        scraped_content = scrape_article(url)
+        try:
+            url = row['news_url']
+            scraped_content = scrape_article(url)
 
-        splitData = split_by_newline(scraped_content)
-        
-        # Find the longest array
-        longest_array = max(splitData, key=len)
+            splitData = split_by_newline(scraped_content)
+            # Find the longest array
+            longest_array = max(splitData, key=len)
 
-        scraped_df = scraped_df.append({'author': row['author'], 
-                                        'published': row['published'], 
-                                        'title': row['title'], 
-                                        'text': longest_array, 
-                                        'language': "english", 
-                                        'site_url': row['site_url'], 
-                                        'main_img_url': 0, 
-                                        'type': 'bias', 
-                                        'label': 'Fake', 
-                                        'title_without_stopwords': row['title_without_stopwords'], 
-                                        'text_without_stopwords': row['text_without_stopwords'], 
-                                        'hasImage': 1}, 
-                                        ignore_index=True)
+            scraped_df = scraped_df.append({#'author': row['author'], 
+                                            'published': str(row['news_url']).split('.')[1], 
+                                            'title': row['title'], 
+                                            'text': longest_array, 
+                                            'language': "english", 
+                                            'site_url': row['news_url'], 
+                                            'main_img_url': 1, 
+                                            'type': 'bias', 
+                                            'label': 'Fake', 
+                                            # 'title_without_stopwords': row['title_without_stopwords'], 
+                                            # 'text_without_stopwords': row['text_without_stopwords'], 
+                                            'hasImage': 1}, 
+                                            ignore_index=True)
+        except:
+            pass
         # print(scraped_content)
-        # print(splitData[6])
+        # print(splitData)
         # Append scraped content to the DataFrame
         
     
