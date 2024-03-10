@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 def scrape_article(url):
     # Send a GET request to the URL
-    response = requests.get("https://" + url)
+    response = requests.get("http://" + url)
     
     # Check if the request was successful
     if response.status_code == 200:
