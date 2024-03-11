@@ -92,6 +92,7 @@ def process_row(row):
         return None
 
 def main():
+    
     # Path to your CSV file containing links
     csv_file = os.path.join('csvs', 'gossipcop_real.csv')
     
