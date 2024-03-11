@@ -5,10 +5,12 @@ from bs4 import BeautifulSoup
 import json
 from multiprocessing import Pool
 
+import requests
+
 def scrape_article(url):
     try:
-        # Send a GET request to the URL
-        response = requests.get("http://" + url)
+        # Send a GET request to the URL with a timeout of 10 seconds
+        response = requests.get("http://" + url, timeout=10)
         
         # Check if the request was successful
         if response.status_code == 200:
@@ -25,9 +27,13 @@ def scrape_article(url):
         else:
             print(f"Failed to fetch data from {url}")
             return None
+    except requests.Timeout:
+        print(f"Request to {url} timed out")
+        return None
     except Exception as e:
         print(f"Error scraping URL {url}: {e}")
         return None
+
 
 def split_by_newline(data):
     if data is None:
@@ -68,6 +74,10 @@ def process_row(row):
         title = row['title']
         scraped_content = scrape_article(url)
 
+        if scraped_content is None:
+            # If scraping fails, return None
+            return None
+
         splitData = split_by_newline(scraped_content)
         
         splitData.append([url, title])
@@ -80,7 +90,7 @@ def process_row(row):
 
 def main():
     # Path to your CSV file containing links
-    csv_file = os.path.join('csvs', 'gossipcop_fake.csv')
+    csv_file = os.path.join('csvs', 'test.csv')
     
     # Read the CSV file into a DataFrame
     df = pd.read_csv(csv_file)
@@ -92,7 +102,7 @@ def main():
     total_rows = len(rows)
 
     # Define the number of processes to use
-    num_processes = 4  # Use 6 CPU cores
+    num_processes = 6  # Use 6 CPU cores
 
     # Create a Pool of worker processes
     with Pool(num_processes) as pool:
@@ -115,7 +125,7 @@ def main():
 
             if result is not None:
                 # Extend the all_results list with the result
-                all_results.extend(result)
+                all_results.append(result)
     
     # Save the all_results list to a single JSON file
     save_to_json(all_results, 'scraped_data.json')
