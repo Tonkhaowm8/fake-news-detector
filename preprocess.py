@@ -20,7 +20,7 @@ def check(data, df, filename):
     "January", "February", "March", "April", 
     "May", "June", "July", "August", 
     "September", "October", "November", "December"]
-    author = ""
+    author = "-NO AUTHOR-"
     date = ""
     text = ""
     label = ""
