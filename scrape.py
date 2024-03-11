@@ -93,7 +93,7 @@ def process_row(row):
 
 def main():
     # Path to your CSV file containing links
-    csv_file = os.path.join('csvs', 'politifact_real.csv')
+    csv_file = os.path.join('csvs', 'gossipcop_real.csv')
     
     # Read the CSV file into a DataFrame
     df = pd.read_csv(csv_file)
