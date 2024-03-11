@@ -9,8 +9,12 @@ import requests
 
 def scrape_article(url):
     try:
+        # Check if the URL starts with "http://" or "https://"
+        if not url.startswith("http://") and not url.startswith("https://"):
+            url = "http://" + url  # Add "http://" prefix if missing
+        
         # Send a GET request to the URL with a timeout of 10 seconds
-        response = requests.get("http://" + url, timeout=10)
+        response = requests.get(url, timeout=10)
         
         # Check if the request was successful
         if response.status_code == 200:
@@ -33,7 +37,6 @@ def scrape_article(url):
     except Exception as e:
         print(f"Error scraping URL {url}: {e}")
         return None
-
 
 def split_by_newline(data):
     if data is None:
@@ -90,7 +93,7 @@ def process_row(row):
 
 def main():
     # Path to your CSV file containing links
-    csv_file = os.path.join('csvs', 'test.csv')
+    csv_file = os.path.join('csvs', 'politifact_real.csv')
     
     # Read the CSV file into a DataFrame
     df = pd.read_csv(csv_file)
